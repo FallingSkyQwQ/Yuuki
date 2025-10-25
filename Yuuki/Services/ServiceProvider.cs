@@ -8,6 +8,7 @@ using Yuuki.Data;
 using Yuuki.Data.Repositories;
 using Yuuki.Services.Api;
 using Yuuki.Services.Authentication;
+using Yuuki.Services.Version;
 
 namespace Yuuki.Services;
 
@@ -125,6 +126,9 @@ public static class ServiceProvider
         {
             client.Timeout = TimeSpan.FromSeconds(30);
         });
+
+        // Register version management services
+        services.AddScoped<IVersionManager, VersionManager>();
     }
 
     private static void InitializeDatabase()

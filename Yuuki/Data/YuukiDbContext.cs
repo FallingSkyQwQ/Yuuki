@@ -36,7 +36,7 @@ public class YuukiDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configure GameInstance entity
+
         modelBuilder.Entity<GameInstance>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -47,20 +47,20 @@ public class YuukiDbContext : DbContext
             entity.Property(e => e.IconPath).HasMaxLength(500);
             entity.Property(e => e.Notes).HasMaxLength(2000);
 
-            // Create index on Name for faster lookups
+
             entity.HasIndex(e => e.Name);
 
-            // Create index on LastPlayed for sorting
+
             entity.HasIndex(e => e.LastPlayed);
 
-            // Configure one-to-many relationship with InstalledMods
+
             entity.HasMany(e => e.InstalledMods)
                 .WithOne(m => m.GameInstance)
                 .HasForeignKey(m => m.GameInstanceId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // Configure InstalledMod entity
+
         modelBuilder.Entity<InstalledMod>(entity =>
         {
             entity.HasKey(e => e.Id);
@@ -71,7 +71,7 @@ public class YuukiDbContext : DbContext
             entity.Property(e => e.FileName).IsRequired().HasMaxLength(500);
             entity.Property(e => e.LatestVersion).HasMaxLength(50);
 
-            // Create index on GameInstanceId for faster queries
+
             entity.HasIndex(e => e.GameInstanceId);
 
             // Create index on ModId
