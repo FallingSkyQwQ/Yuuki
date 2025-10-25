@@ -139,7 +139,84 @@
 
 ---
 
+## Stage 4: Microsoft Account Authentication System
+
+**Goal**: Implement Microsoft account OAuth2.0 authentication with MSAL and Minecraft profile integration
+
+**Success Criteria**:
+- MSAL library integrated for Microsoft authentication ✅
+- OAuth2.0 flow implemented with proper scopes ✅
+- Xbox Live and XSTS authentication chain implemented ✅
+- Minecraft profile retrieval working ✅
+- User account data model with token storage ✅
+- Account repository for multi-account management ✅
+- All services registered in DI container ✅
+- Solution compiles successfully ✅
+
+**Tests**:
+- ✅ Solution compiles without errors
+- ✅ MSAL client properly configured
+- ✅ Authentication flow chain complete (MS -> Xbox -> XSTS -> Minecraft)
+- ✅ Token refresh logic implemented
+- ✅ Account repository with active account management
+- ✅ All authentication services registered
+
+**Status**: Complete
+
+### Tasks:
+- [x] Add MSAL NuGet package (Microsoft.Identity.Client 4.67.1)
+- [x] Create account data models
+  - [x] UserAccount entity with token storage
+  - [x] AccountType enum (Microsoft, Offline)
+  - [x] AuthResult model for operation results
+- [x] Implement MSAL authentication integration
+  - [x] PublicClientApplication configuration
+  - [x] Interactive authentication flow
+  - [x] Xbox Live authentication
+  - [x] XSTS authentication
+  - [x] Minecraft authentication
+  - [x] Profile retrieval from Minecraft API
+- [x] Implement account management service
+  - [x] Token refresh with silent authentication
+  - [x] Sign out functionality
+  - [x] Multi-account support
+- [x] Create account repository
+  - [x] Active account management
+  - [x] Account lookup by UUID/email
+  - [x] Last used ordering
+- [x] Register services in DI container
+- [x] Update DbContext with UserAccount entity
+
+### Completed Components:
+- **Account Models**: `UserAccount`, `AuthResult`, `AccountType` enum
+- **Authentication Service**: `AccountManager` with full Microsoft/Xbox/Minecraft auth chain
+- **Authentication Flow**:
+  1. Microsoft account OAuth2.0 (MSAL)
+  2. Xbox Live authentication
+  3. XSTS token acquisition
+  4. Minecraft authentication
+  5. Profile retrieval
+- **Repository**: `UserAccountRepository` with multi-account management
+- **Database**: UserAccount entity with indexes on Uuid (unique), Email, IsActive
+- **DI Registration**: AccountManager registered with HttpClient factory
+- **Token Management**: Refresh token support with silent authentication
+
+### Authentication Chain Details:
+```
+Microsoft Account (MSAL)
+    ↓ Access Token
+Xbox Live Authentication
+    ↓ Xbox Token
+XSTS Authentication
+    ↓ XSTS Token + UserHash
+Minecraft Authentication
+    ↓ Minecraft Access Token
+Minecraft Profile API
+    ↓ Username, UUID, Skin
+```
+
+---
+
 ## Next Stages (Planned):
 
-### Stage 4: Microsoft Account Authentication System
 ### Stage 5: Version Management System Implementation

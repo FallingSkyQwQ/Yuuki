@@ -7,6 +7,7 @@ using Serilog;
 using Yuuki.Data;
 using Yuuki.Data.Repositories;
 using Yuuki.Services.Api;
+using Yuuki.Services.Authentication;
 
 namespace Yuuki.Services;
 
@@ -97,6 +98,7 @@ public static class ServiceProvider
         // Register repositories
         services.AddScoped<IGameInstanceRepository, GameInstanceRepository>();
         services.AddScoped<IInstalledModRepository, InstalledModRepository>();
+        services.AddScoped<IUserAccountRepository, UserAccountRepository>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
     }
 
@@ -114,6 +116,12 @@ public static class ServiceProvider
         });
 
         services.AddHttpClient<IModrinthApiService, ModrinthApiService>(client =>
+        {
+            client.Timeout = TimeSpan.FromSeconds(30);
+        });
+
+        // Register authentication services
+        services.AddHttpClient<IAccountManager, AccountManager>(client =>
         {
             client.Timeout = TimeSpan.FromSeconds(30);
         });

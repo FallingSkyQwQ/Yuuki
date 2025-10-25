@@ -19,6 +19,11 @@ public class YuukiDbContext : DbContext
     public DbSet<InstalledMod> InstalledMods { get; set; } = null!;
 
     /// <summary>
+    /// User accounts table
+    /// </summary>
+    public DbSet<UserAccount> UserAccounts { get; set; } = null!;
+
+    /// <summary>
     /// Initializes a new instance of the YuukiDbContext class
     /// </summary>
     /// <param name="options">Context options</param>
@@ -74,6 +79,27 @@ public class YuukiDbContext : DbContext
 
             // Create composite index for instance + enabled status
             entity.HasIndex(e => new { e.GameInstanceId, e.IsEnabled });
+        });
+
+        // Configure UserAccount entity
+        modelBuilder.Entity<UserAccount>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Username).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Uuid).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Email).IsRequired().HasMaxLength(200);
+            entity.Property(e => e.AccessToken).HasMaxLength(2000);
+            entity.Property(e => e.RefreshToken).HasMaxLength(2000);
+            entity.Property(e => e.AvatarUrl).HasMaxLength(500);
+
+            // Create index on Uuid for faster lookups
+            entity.HasIndex(e => e.Uuid).IsUnique();
+
+            // Create index on Email
+            entity.HasIndex(e => e.Email);
+
+            // Create index on IsActive
+            entity.HasIndex(e => e.IsActive);
         });
     }
 }
