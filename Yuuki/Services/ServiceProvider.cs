@@ -8,6 +8,7 @@ using Yuuki.Data;
 using Yuuki.Data.Repositories;
 using Yuuki.Services.Api;
 using Yuuki.Services.Authentication;
+using Yuuki.Services.Config;
 using Yuuki.Services.Launch;
 using Yuuki.Services.Mod;
 using Yuuki.Services.Resource;
@@ -142,6 +143,10 @@ public static class ServiceProvider
         // Register resource management services
         services.AddScoped<IResourcePackManager, ResourcePackManager>();
         services.AddScoped<IShaderPackManager, ShaderPackManager>();
+
+        // Register configuration and backup services
+        services.AddScoped<IConfigManager, ConfigManager>();
+        services.AddScoped<IBackupManager, BackupManager>();
     }
 
     private static void InitializeDatabase()

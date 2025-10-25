@@ -623,6 +623,123 @@ Shader Pack Flow:
 
 ---
 
+---
+
+## Stage 9: Configuration and Backup System Implementation
+
+**Goal**: Implement application settings management and comprehensive backup/restore system with import/export functionality
+
+**Success Criteria**:
+- Application settings model implemented ✅
+- Settings persistence to JSON implemented ✅
+- Backup system with multiple backup types ✅
+- Backup creation with progress reporting ✅
+- Backup restoration functionality ✅
+- Instance import/export system ✅
+- All services registered in DI container ✅
+- Solution compiles successfully ✅
+
+**Tests**:
+- ✅ Solution compiles without errors
+- ✅ AppSettings model with all configuration options
+- ✅ ConfigManager for settings persistence
+- ✅ BackupManager with Full/SavesOnly/ConfigOnly types
+- ✅ Progress reporting for backup operations
+- ✅ Backup index management (backups.json)
+- ✅ Import/export with ZipFile compression
+- ✅ Registered in DI container
+
+**Status**: Complete
+
+### Tasks:
+- [x] Create configuration models
+  - [x] AppSettings - Java path, memory, theme, language settings
+  - [x] BackupInfo - Backup metadata model
+  - [x] BackupType enum (Full, SavesOnly, ConfigOnly)
+- [x] Implement configuration manager
+  - [x] GetSettingsAsync - Load settings from JSON
+  - [x] SaveSettingsAsync - Persist settings to JSON
+  - [x] ResetSettingsAsync - Reset to defaults
+- [x] Implement backup manager
+  - [x] CreateBackupAsync - Create backup with type selection
+  - [x] RestoreBackupAsync - Restore from backup
+  - [x] DeleteBackupAsync - Delete backup file and index entry
+  - [x] GetBackupsAsync - List all backups
+  - [x] GetBackupsForInstanceAsync - Get backups for specific instance
+- [x] Implement import/export functionality
+  - [x] ExportInstanceAsync - Export instance as zip
+  - [x] ImportInstanceAsync - Import instance from zip
+- [x] Register services in DI container
+- [x] Compile and verify
+
+### Completed Components:
+- **Models**: `AppSettings`, `BackupInfo`, `BackupType` enum
+- **Interfaces**: `IConfigManager` (3 methods), `IBackupManager` (7 methods)
+- **Implementations**: `ConfigManager` (265 lines), `BackupManager` (650 lines)
+- **Core Features**:
+  1. **Configuration Management**:
+     - Java path and memory settings
+     - Theme and language preferences
+     - Download thread configuration
+     - Auto-update settings
+     - Launcher behavior options
+     - JSON persistence to `%LocalAppData%\Yuuki\settings.json`
+  2. **Backup System**:
+     - **Full Backup**: Complete instance directory
+     - **SavesOnly Backup**: Just the saves folder
+     - **ConfigOnly Backup**: Config files (options.txt, servers.dat, etc.)
+     - Progress reporting (0-100%)
+     - SHA1 hash verification (future)
+     - Backup metadata stored in backups.json
+  3. **Import/Export**:
+     - Export instance as portable zip file
+     - Import instance from zip
+     - Automatic instance creation on import
+- **File Locations**:
+  - Settings: `%LocalAppData%\Yuuki\settings.json`
+  - Backups directory: `%LocalAppData%\Yuuki\backups\`
+  - Backup index: `%LocalAppData%\Yuuki\backups.json`
+- **Progress Reporting**: IProgress<int> for UI updates during backup/restore
+- **DI Registration**: Both managers registered as scoped services
+
+### Implementation Details:
+```
+Backup Creation Flow:
+1. Validate game instance exists
+2. Create backup metadata (BackupInfo)
+3. Create zip archive at backups/{name}_{id}_{type}.zip
+4. Add files based on backup type:
+   - Full: All instance files recursively
+   - SavesOnly: saves/ directory only
+   - ConfigOnly: options.txt, servers.dat, etc.
+5. Report progress during file addition
+6. Save backup to index (backups.json)
+
+Backup Restoration Flow:
+1. Load backup info from index
+2. Validate backup file exists
+3. Extract zip to instance directory
+4. Overwrite existing files
+5. Report progress during extraction
+
+Import/Export Flow:
+1. Export: Zip entire instance directory
+2. Import: Create new instance, extract zip, save to repository
+```
+
+**File Locations**:
+- ConfigManager.cs:17-58 - AppSettings model with 8 configuration options
+- ConfigManager.cs:60-125 - BackupInfo model and BackupType enum
+- ConfigManager.cs:196-264 - ConfigManager implementation
+- ConfigManager.cs:270-649 - BackupManager implementation
+- ConfigManager.cs:294-386 - CreateBackupAsync with progress reporting
+- ConfigManager.cs:388-450 - RestoreBackupAsync with extraction
+- ConfigManager.cs:499-536 - ExportInstanceAsync
+- ConfigManager.cs:538-577 - ImportInstanceAsync
+- ConfigManager.cs:579-607 - AddDirectoryToArchive helper with progress
+
+---
+
 ## Next Stages (Planned):
 
-### Stage 9: Configuration and Backup System
+### Stage 10: WinUI3 UI Implementation - Main Window and Navigation

@@ -240,7 +240,7 @@ public class VersionManager : IVersionManager
         }
     }
 
-    public async Task<bool> DeleteVersionAsync(string versionId)
+    public Task<bool> DeleteVersionAsync(string versionId)
     {
         try
         {
@@ -251,19 +251,19 @@ public class VersionManager : IVersionManager
             {
                 Directory.Delete(versionDir, recursive: true);
                 _logger.LogInformation("Deleted version {VersionId}", versionId);
-                return true;
+                return Task.FromResult(true);
             }
 
-            return false;
+            return Task.FromResult(false);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to delete version {VersionId}", versionId);
-            return false;
+            return Task.FromResult(false);
         }
     }
 
-    public async Task<bool> ValidateVersionAsync(string versionId)
+    public Task<bool> ValidateVersionAsync(string versionId)
     {
         try
         {
@@ -275,16 +275,16 @@ public class VersionManager : IVersionManager
 
             if (!File.Exists(versionJsonPath) || !File.Exists(clientJarPath))
             {
-                return false;
+                return Task.FromResult(false);
             }
 
             // Could add more validation here (hash checks, etc.)
-            return true;
+            return Task.FromResult(true);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to validate version {VersionId}", versionId);
-            return false;
+            return Task.FromResult(false);
         }
     }
 
