@@ -10,6 +10,7 @@ using Yuuki.Services.Api;
 using Yuuki.Services.Authentication;
 using Yuuki.Services.Launch;
 using Yuuki.Services.Mod;
+using Yuuki.Services.Resource;
 using Yuuki.Services.Version;
 
 namespace Yuuki.Services;
@@ -137,6 +138,10 @@ public static class ServiceProvider
 
         // Register game launch services
         services.AddScoped<IGameLauncher, GameLauncher>();
+
+        // Register resource management services
+        services.AddScoped<IResourcePackManager, ResourcePackManager>();
+        services.AddScoped<IShaderPackManager, ShaderPackManager>();
     }
 
     private static void InitializeDatabase()

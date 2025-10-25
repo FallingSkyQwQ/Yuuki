@@ -510,6 +510,119 @@ Launch Pipeline Flow:
 
 ---
 
+## Stage 8: Resource Pack and Shader Pack Management
+
+**Goal**: Implement resource pack and shader pack management with load order control
+
+**Success Criteria**:
+- Resource pack model and manager implemented ✅
+- Shader pack model and manager implemented ✅
+- Resource pack load order management ✅
+- Resource pack enable/disable toggle ✅
+- Shader pack enable (one at a time) ✅
+- pack.mcmeta parsing for resource packs ✅
+- Integration with Minecraft options files ✅
+- All services registered in DI container ✅
+- Solution compiles successfully ✅
+
+**Tests**:
+- ✅ Solution compiles without errors
+- ✅ ResourcePack and ShaderPack models
+- ✅ IResourcePackManager and IShaderPackManager interfaces
+- ✅ Resource pack installation and uninstallation
+- ✅ Shader pack installation and uninstallation
+- ✅ Load order management for resource packs
+- ✅ Single shader enable/disable
+- ✅ pack.mcmeta JSON parsing
+- ✅ options.txt and optionsshaders.txt integration
+- ✅ Registered in DI container
+
+**Status**: Complete
+
+### Tasks:
+- [x] Create resource pack and shader pack models
+  - [x] ResourcePack - Name, description, pack format, load order
+  - [x] ShaderPack - Name, folder/zip type, enabled status
+- [x] Implement resource pack manager
+  - [x] GetResourcePacksAsync - List all packs
+  - [x] InstallResourcePackAsync - Copy zip to resourcepacks dir
+  - [x] UninstallResourcePackAsync - Delete pack file
+  - [x] ToggleResourcePackAsync - Enable/disable pack
+  - [x] UpdateLoadOrderAsync - Reorder packs
+  - [x] GetEnabledPacksInOrderAsync - Get active packs
+  - [x] pack.mcmeta parsing with JsonDocument
+  - [x] options.txt integration for enabled packs list
+- [x] Implement shader pack manager
+  - [x] GetShaderPacksAsync - List all shader packs (zip + folders)
+  - [x] InstallShaderPackAsync - Copy shader to shaderpacks dir
+  - [x] UninstallShaderPackAsync - Delete shader
+  - [x] EnableShaderPackAsync - Enable one shader
+  - [x] DisableAllShadersAsync - Disable all shaders
+  - [x] optionsshaders.txt integration
+- [x] Implement load order management
+  - [x] Load order stored in options.txt resourcePacks array
+  - [x] Drag-and-drop reordering support
+- [x] Register managers in DI container
+- [x] Compile and verify
+
+### Completed Components:
+- **Models**: `ResourcePack`, `ShaderPack`
+- **Interfaces**: `IResourcePackManager` (6 methods), `IShaderPackManager` (4 methods)
+- **Implementations**: `ResourcePackManager` (340 lines), `ShaderPackManager` (230 lines)
+- **Core Features**:
+  1. **Resource Packs**:
+     - Install/uninstall zip files
+     - Parse pack.mcmeta for metadata
+     - Enable/disable with load order
+     - Save to options.txt as JSON array
+  2. **Shader Packs**:
+     - Support both zip files and folders
+     - Install/uninstall shaders
+     - Enable one shader at a time
+     - Save to optionsshaders.txt
+- **File Integration**:
+  - **options.txt**: `resourcePacks:[" pack1.zip","pack2.zip"]`
+  - **optionsshaders.txt**: `shaderPack=MyShader.zip`
+- **pack.mcmeta Parsing**:
+  ```json
+  {
+    "pack": {
+      "pack_format": 15,
+      "description": "My Resource Pack"
+    }
+  }
+  ```
+- **Directory Structure**:
+  - Resource packs: `{instance}/resourcepacks/*.zip`
+  - Shader packs: `{instance}/shaderpacks/*.zip` or `folders/`
+- **DI Registration**: Both managers registered as scoped services
+
+### Implementation Details:
+```
+Resource Pack Flow:
+1. Scan resourcepacks/ directory for *.zip files
+2. Parse pack.mcmeta from each zip for metadata
+3. Load enabled packs from options.txt resourcePacks line
+4. Return packs ordered by load order
+5. Toggle: Add/remove from resourcePacks JSON array
+6. Reorder: Update entire resourcePacks array
+
+Shader Pack Flow:
+1. Scan shaderpacks/ for *.zip files and folders
+2. Load enabled shader from optionsshaders.txt shaderPack line
+3. Enable: Set shaderPack=name (only one at a time)
+4. Disable: Set shaderPack= (empty)
+```
+
+**File Locations**:
+- ResourceManager.cs:18-63 - ResourcePack and ShaderPack models
+- ResourceManager.cs:130-229 - Resource pack installation and toggling
+- ResourceManager.cs:231-356 - pack.mcmeta parsing and options.txt integration
+- ResourceManager.cs:398-493 - Shader pack installation and toggling
+- ResourceManager.cs:495-561 - optionsshaders.txt integration
+
+---
+
 ## Next Stages (Planned):
 
-### Stage 8: Resource Pack and Shader Pack Management
+### Stage 9: Configuration and Backup System
