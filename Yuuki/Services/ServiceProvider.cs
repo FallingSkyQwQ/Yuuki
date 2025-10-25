@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Yuuki.Data;
+using Yuuki.Data.Repositories;
 
 namespace Yuuki.Services;
 
@@ -88,6 +89,11 @@ public static class ServiceProvider
         // Register DbContext
         services.AddDbContext<YuukiDbContext>(options =>
             options.UseSqlite($"Data Source={dbPath}"));
+
+        // Register repositories
+        services.AddScoped<IGameInstanceRepository, GameInstanceRepository>();
+        services.AddScoped<IInstalledModRepository, InstalledModRepository>();
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
     }
 
     private static void InitializeDatabase()

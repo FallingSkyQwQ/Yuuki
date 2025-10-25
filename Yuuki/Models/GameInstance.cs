@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Yuuki.Models;
 
@@ -48,27 +49,22 @@ public class GameInstance
     public long TotalPlayTime { get; set; }
 
     /// <summary>
-    /// Maximum memory allocation in MB
+    /// Launch settings serialized as JSON
     /// </summary>
-    public int MaxMemoryMB { get; set; } = 2048;
+    public string? LaunchSettingsJson { get; set; }
 
     /// <summary>
-    /// Minimum memory allocation in MB
+    /// Icon/image path for this instance
     /// </summary>
-    public int MinMemoryMB { get; set; } = 512;
+    public string? IconPath { get; set; }
 
     /// <summary>
-    /// Custom JVM arguments
+    /// Notes about this instance
     /// </summary>
-    public string? CustomJvmArgs { get; set; }
+    public string? Notes { get; set; }
 
     /// <summary>
-    /// Game window width
+    /// Installed mods for this instance
     /// </summary>
-    public int? WindowWidth { get; set; }
-
-    /// <summary>
-    /// Game window height
-    /// </summary>
-    public int? WindowHeight { get; set; }
+    public List<InstalledMod> InstalledMods { get; set; } = new();
 }
