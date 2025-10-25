@@ -8,6 +8,7 @@ using Yuuki.Data;
 using Yuuki.Data.Repositories;
 using Yuuki.Services.Api;
 using Yuuki.Services.Authentication;
+using Yuuki.Services.Launch;
 using Yuuki.Services.Mod;
 using Yuuki.Services.Version;
 
@@ -133,6 +134,9 @@ public static class ServiceProvider
 
         // Register mod management services
         services.AddScoped<IModManager, ModManager>();
+
+        // Register game launch services
+        services.AddScoped<IGameLauncher, GameLauncher>();
     }
 
     private static void InitializeDatabase()

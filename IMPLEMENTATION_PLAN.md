@@ -388,6 +388,128 @@ ModManager Operation Flow:
 
 ---
 
+## Stage 7: Game Launch Core System Implementation
+
+**Goal**: Implement complete game launch system with JVM/game argument generation, process management, and monitoring
+
+**Success Criteria**:
+- Launch configuration model implemented ✅
+- JVM argument generator with memory and performance settings ✅
+- Game argument generator with authentication ✅
+- Class path builder for libraries and mods ✅
+- Game process launcher with monitoring ✅
+- Process monitoring and log collection ✅
+- All services registered in DI container ✅
+- Solution compiles successfully ✅
+
+**Tests**:
+- ✅ Solution compiles without errors
+- ✅ LaunchConfig model with JVM and game settings
+- ✅ LaunchProgress for real-time status updates
+- ✅ GameProcess for process tracking
+- ✅ GameLauncher interface and implementation
+- ✅ JVM arguments with G1GC optimizations
+- ✅ Game arguments with authentication
+- ✅ Class path building from version JSON
+- ✅ Process stdout/stderr monitoring
+- ✅ Crash detection from log output
+- ✅ Registered in DI container
+
+**Status**: Complete
+
+### Tasks:
+- [x] Create launch parameter models
+  - [x] LaunchConfig - Java path, memory, window size, custom args
+  - [x] LaunchProgress - Status tracking with percentage
+  - [x] GameProcess - Process info, logs, crash detection
+- [x] Implement JVM argument generator
+  - [x] Memory settings (-Xmx, -Xms)
+  - [x] Natives directory configuration
+  - [x] G1GC performance optimizations
+  - [x] Custom JVM arguments support
+- [x] Implement game argument generator
+  - [x] Username and UUID from user account
+  - [x] Access token authentication
+  - [x] Game directory and assets path
+  - [x] Window size or fullscreen
+  - [x] Custom game arguments support
+- [x] Implement class path builder
+  - [x] Parse version JSON for libraries
+  - [x] Add all library JARs to classpath
+  - [x] Add client JAR to classpath
+  - [x] Add enabled mods to classpath (Fabric/Forge)
+- [x] Implement game process launcher
+  - [x] ProcessStartInfo configuration
+  - [x] Redirect stdout and stderr
+  - [x] Working directory setup
+  - [x] Console visibility control
+- [x] Implement process monitoring and log collection
+  - [x] OutputDataReceived event handler
+  - [x] ErrorDataReceived event handler
+  - [x] Log line collection
+  - [x] Crash detection from logs
+  - [x] Exit code monitoring
+- [x] Update LaunchException with custom error codes
+- [x] Register GameLauncher in DI container
+- [x] Compile and verify
+
+### Completed Components:
+- **Models**: `LaunchConfig`, `LaunchProgress`, `GameProcess`
+- **Interface**: `IGameLauncher` with 3 public methods
+- **Implementation**: `GameLauncher` (468 lines)
+- **Core Features**:
+  1. **Launch**: Complete launch pipeline with 7 steps
+  2. **Configure**: JVM and game argument generation
+  3. **Build**: Class path from libraries, client JAR, mods
+  4. **Start**: Process creation with redirected output
+  5. **Monitor**: Real-time stdout/stderr collection
+  6. **Detect**: Crash detection from exception keywords
+  7. **Track**: Running games list with status
+  8. **Terminate**: Kill game process by PID
+- **Launch Pipeline** (7 steps):
+  1. Load game instance
+  2. Load user account
+  3. Prepare game directories
+  4. Build class path
+  5. Generate launch arguments
+  6. Start game process
+  7. Monitor process output
+- **JVM Optimizations**:
+  - G1GC garbage collector
+  - Optimized heap region size (32M)
+  - Max GC pause time (50ms)
+  - NewSizePercent and ReservePercent tuning
+- **Directory Structure**:
+  - Game dir: `%LocalAppData%\Yuuki\instances\{instance_id}\`
+  - Subdirs: saves, resourcepacks, shaderpacks, screenshots
+  - Natives: `%LocalAppData%\Yuuki\minecraft\versions\{version}\natives\`
+- **Progress Reporting**: IProgress<LaunchProgress> for UI updates
+- **DI Registration**: GameLauncher registered as scoped service
+
+### Implementation Details:
+```
+Launch Pipeline Flow:
+1. Validate instance and account
+2. Prepare directories (game dir, natives)
+3. Build classpath from version JSON
+4. Generate JVM args (-Xmx, -Xms, -Djava.library.path, G1GC flags)
+5. Generate game args (--username, --uuid, --accessToken, etc.)
+6. Start process with redirected I/O
+7. Monitor stdout/stderr for logs and crashes
+8. Track process exit and crash status
+```
+
+**File Locations**:
+- LaunchConfig.cs - Launch configuration model (131 lines)
+- GameLauncher.cs:68-178 - Main launch method with 7-step pipeline
+- GameLauncher.cs:242-278 - Class path building from version JSON
+- GameLauncher.cs:280-322 - JVM arguments generation
+- GameLauncher.cs:324-379 - Game arguments generation
+- GameLauncher.cs:381-397 - Process start configuration
+- GameLauncher.cs:399-442 - Process monitoring and crash detection
+
+---
+
 ## Next Stages (Planned):
 
-### Stage 7: Game Launch Core System Implementation
+### Stage 8: Resource Pack and Shader Pack Management

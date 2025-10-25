@@ -12,6 +12,11 @@ public class LaunchException : YuukiException
     {
     }
 
+    public LaunchException(string errorCode, string message)
+        : base(errorCode, message)
+    {
+    }
+
     public LaunchException(string message, Exception innerException)
         : base("LAUNCH_ERROR", message, innerException)
     {
