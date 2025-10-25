@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Yuuki.Data;
 using Yuuki.Data.Repositories;
+using Yuuki.Services.Api;
 
 namespace Yuuki.Services;
 
@@ -34,6 +35,9 @@ public static class ServiceProvider
 
         // Configure database
         ConfigureDataServices(services);
+
+        // Configure API services
+        ConfigureApiServices(services);
 
         // TODO: Register services here as we build them
         // ConfigureBusinessServices(services);
@@ -94,6 +98,25 @@ public static class ServiceProvider
         services.AddScoped<IGameInstanceRepository, GameInstanceRepository>();
         services.AddScoped<IInstalledModRepository, InstalledModRepository>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+    }
+
+    private static void ConfigureApiServices(IServiceCollection services)
+    {
+        // Register HttpClient for API services
+        services.AddHttpClient<IMojangApiService, MojangApiService>(client =>
+        {
+            client.Timeout = TimeSpan.FromSeconds(30);
+        });
+
+        services.AddHttpClient<IModLoaderApiService, ModLoaderApiService>(client =>
+        {
+            client.Timeout = TimeSpan.FromSeconds(30);
+        });
+
+        services.AddHttpClient<IModrinthApiService, ModrinthApiService>(client =>
+        {
+            client.Timeout = TimeSpan.FromSeconds(30);
+        });
     }
 
     private static void InitializeDatabase()

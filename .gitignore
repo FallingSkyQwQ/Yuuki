@@ -17,6 +17,9 @@
 *.user
 *.userosscache
 *.sln.docstates
+IMPLEMENTATION_PLAN.md
+开发守则.txt
+.kiro/
 
 # Build results
 [Dd]ebug/

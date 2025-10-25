@@ -86,8 +86,60 @@
 
 ---
 
+## Stage 3: External API Service Integration
+
+**Goal**: Implement API clients for Mojang, mod platforms, and mod loaders with retry policies
+
+**Success Criteria**:
+- Mojang API client implemented with version manifest parsing ✅
+- Mod platform API client (Modrinth) implemented ✅
+- Mod loader APIs (Fabric/Forge/NeoForge) integrated ✅
+- HTTP retry policies configured with Polly ✅
+- All API services registered in DI container ✅
+- Solution compiles successfully ✅
+
+**Tests**:
+- ✅ Solution compiles without errors
+- ✅ API response models properly defined
+- ✅ Retry policies configured for resilience
+- ✅ HttpClient properly configured with timeouts
+- ✅ All API services registered as scoped/singleton
+
+**Status**: Complete
+
+### Tasks:
+- [x] Implement Mojang API client
+  - [x] Version manifest fetching
+  - [x] Version detail parsing
+  - [x] File download with progress tracking
+  - [x] Retry policy with exponential backoff
+- [x] Implement mod platform API clients
+  - [x] Modrinth search API
+  - [x] Modrinth project details API
+  - [x] Modrinth version listing API
+  - [x] File download with progress
+- [x] Implement mod loader API integration
+  - [x] Fabric Meta API for loader versions
+  - [x] Forge promotions API
+  - [x] NeoForge Maven metadata (stub)
+- [x] Register all API services in DI container
+  - [x] Configure HttpClient with timeouts
+  - [x] Add Microsoft.Extensions.Http package
+
+### Completed Components:
+- **Mojang API**: `MojangApiService` with version manifest, details, and download support
+- **Modrinth API**: `ModrinthApiService` with search, project details, and versions
+- **Mod Loader APIs**: `ModLoaderApiService` for Fabric, Forge, NeoForge
+- **API Models**: Complete response models for all APIs
+  - `MojangApiModels` (VersionManifestResponse, VersionDetail, Library, etc.)
+  - `ModrinthApiModels` (ModrinthSearchResponse, ModrinthProject, ModrinthVersion, etc.)
+  - `ModLoaderApiModels` (FabricLoaderVersion, ForgePromos, etc.)
+- **Resilience**: Polly retry policies with exponential backoff
+- **DI Registration**: HttpClient factory pattern with proper configuration
+
+---
+
 ## Next Stages (Planned):
 
-### Stage 3: External API Service Integration
 ### Stage 4: Microsoft Account Authentication System
 ### Stage 5: Version Management System Implementation
