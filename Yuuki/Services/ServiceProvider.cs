@@ -8,6 +8,7 @@ using Yuuki.Data;
 using Yuuki.Data.Repositories;
 using Yuuki.Services.Api;
 using Yuuki.Services.Authentication;
+using Yuuki.Services.Mod;
 using Yuuki.Services.Version;
 
 namespace Yuuki.Services;
@@ -129,6 +130,9 @@ public static class ServiceProvider
 
         // Register version management services
         services.AddScoped<IVersionManager, VersionManager>();
+
+        // Register mod management services
+        services.AddScoped<IModManager, ModManager>();
     }
 
     private static void InitializeDatabase()

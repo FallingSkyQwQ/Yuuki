@@ -47,7 +47,7 @@ public interface IAccountManager
 /// </summary>
 public class AccountManager : IAccountManager
 {
-    private const string ClientId = "00000000-0000-0000-0000-000000000000"; // Placeholder - needs real Azure AD app
+    private const string ClientId = "11d9b2c5-9ab2-4493-a9de-2517e39981ec"; // my client id
     private const string Authority = "https://login.microsoftonline.com/consumers";
     private static readonly string[] Scopes = new[] { "XboxLive.signin", "offline_access" };
 
