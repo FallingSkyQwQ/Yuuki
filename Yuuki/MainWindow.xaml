@@ -6,14 +6,56 @@
     xmlns:local="using:Yuuki"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Title="Yuuki">
+    mc:Ignorable="d">
 
     <Window.SystemBackdrop>
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
     <Grid>
+        <NavigationView
+            x:Name="NavigationViewControl"
+            IsBackButtonVisible="Collapsed"
+            IsSettingsVisible="True"
+            PaneDisplayMode="Left"
+            ItemInvoked="NavigationView_ItemInvoked"
+            SelectionChanged="NavigationView_SelectionChanged">
 
+            <NavigationView.MenuItems>
+                <NavigationViewItem
+                    Content="首页"
+                    Tag="Home">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE80F;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItem
+                    Content="版本管理"
+                    Tag="Versions">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE896;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItem
+                    Content="模组管理"
+                    Tag="Mods">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE7C3;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItem
+                    Content="账户管理"
+                    Tag="Accounts">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE77B;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <Frame x:Name="ContentFrame"/>
+        </NavigationView>
     </Grid>
 </Window>

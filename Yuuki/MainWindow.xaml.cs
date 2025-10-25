@@ -1,31 +1,73 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using Yuuki.Views.Pages;
 
 namespace Yuuki
 {
     /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// 主窗口
     /// </summary>
     public sealed partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+            Title = "Yuuki - Minecraft 启动器";
+
+            // Set default size
+            var appWindow = this.AppWindow;
+            appWindow.Resize(new Windows.Graphics.SizeInt32(1200, 800));
+
+            // Navigate to home page on startup
+            ContentFrame.Navigate(typeof(HomePage));
+            NavigationViewControl.SelectedItem = NavigationViewControl.MenuItems[0];
+        }
+
+        private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+            if (args.IsSettingsInvoked)
+            {
+                ContentFrame.Navigate(typeof(SettingsPage));
+            }
+            else if (args.InvokedItemContainer != null)
+            {
+                var tag = args.InvokedItemContainer.Tag?.ToString();
+                NavigateToPage(tag);
+            }
+        }
+
+        private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
+            if (args.IsSettingsSelected)
+            {
+                ContentFrame.Navigate(typeof(SettingsPage));
+            }
+            else if (args.SelectedItemContainer != null)
+            {
+                var tag = args.SelectedItemContainer.Tag?.ToString();
+                NavigateToPage(tag);
+            }
+        }
+
+        private void NavigateToPage(string? tag)
+        {
+            if (string.IsNullOrEmpty(tag))
+                return;
+
+            Type? pageType = tag switch
+            {
+                "Home" => typeof(HomePage),
+                "Versions" => typeof(VersionsPage),
+                "Mods" => typeof(ModsPage),
+                "Accounts" => typeof(AccountsPage),
+                _ => null
+            };
+
+            if (pageType != null && ContentFrame.CurrentSourcePageType != pageType)
+            {
+                ContentFrame.Navigate(pageType);
+            }
         }
     }
 }
