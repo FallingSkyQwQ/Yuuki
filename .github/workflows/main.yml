@@ -22,8 +22,8 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.13.0'
-          channel: stable
+         flutter-version: '3.22.1'  # ✅ 至少 3.22.x 才带 Dart 3.9.2
+         channel: stable
 
       - name: Install dependencies
         run: flutter pub get
